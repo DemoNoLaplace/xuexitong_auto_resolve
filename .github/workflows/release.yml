@@ -58,7 +58,7 @@ jobs:
           Copy-Item -Force docs\使用说明.md dist\使用说明.md
           Copy-Item -Force README.md dist\README.md
           Compress-Archive `
-            -Path dist\chaoxing-flow.exe, dist\answer_banks, dist\config.example.env, dist\使用说明.md, dist\README.md `
+            -Path dist\chaoxing-flow.exe, dist\answer_banks, dist\config.example.env, dist\使用说明.md, dist\README.md, LICENSE, THIRD_PARTY_NOTICES.md, LICENSES `
             -DestinationPath dist\chaoxing-flow-windows.zip `
             -Force
 
