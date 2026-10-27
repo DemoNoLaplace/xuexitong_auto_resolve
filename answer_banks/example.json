@@ -1,0 +1,29 @@
+{
+  "_comment": "答案库示例。复制为 my_bank.json 后按格式修改；contains 中的关键词全部命中题干才会匹配。",
+  "answers": [
+    {
+      "contains": ["示例关键词1", "示例关键词2"],
+      "type": "单选题",
+      "answer": "A",
+      "note": "示例：单选题返回 A/B/C/D"
+    },
+    {
+      "contains": ["示例判断题关键词"],
+      "type": "判断题",
+      "answer": "true",
+      "note": "示例：判断题返回 true 或 false"
+    },
+    {
+      "contains": ["示例多选题关键词"],
+      "type": "多选题",
+      "answer": "ABC",
+      "note": "示例：多选题返回按字母排序的字符串"
+    },
+    {
+      "contains": ["示例简答题关键词"],
+      "type": "简答题",
+      "answer": "在这里填写简答题参考答案。",
+      "note": "示例：简答题返回文本"
+    }
+  ]
+}

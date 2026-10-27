@@ -1,0 +1,72 @@
+name: build-and-release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pyinstaller
+
+      - name: Build executable
+        shell: pwsh
+        run: |
+          python -m PyInstaller `
+            --noconfirm --clean --onefile `
+            --name chaoxing-flow `
+            --paths . `
+            --collect-all uiautomation `
+            --collect-all comtypes `
+            --collect-all pymupdf `
+            --add-data "chaoxing_flow\font_ref.npz;chaoxing_flow" `
+            --hidden-import lxml.etree `
+            --exclude-module onnxruntime `
+            --exclude-module cv2 `
+            --exclude-module pandas `
+            --exclude-module matplotlib `
+            --exclude-module langchain `
+            --exclude-module pydantic `
+            --exclude-module IPython `
+            launcher.py
+
+      - name: Prepare release bundle
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist\answer_banks | Out-Null
+          Copy-Item -Recurse -Force answer_banks\* dist\answer_banks
+          Copy-Item -Force config.example.env dist\config.example.env
+          Copy-Item -Force docs\使用说明.md dist\使用说明.md
+          Copy-Item -Force README.md dist\README.md
+          Compress-Archive `
+            -Path dist\chaoxing-flow.exe, dist\answer_banks, dist\config.example.env, dist\使用说明.md, dist\README.md `
+            -DestinationPath dist\chaoxing-flow-windows.zip `
+            -Force
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            dist/chaoxing-flow.exe
+            dist/chaoxing-flow-windows.zip

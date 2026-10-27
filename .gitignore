@@ -1,0 +1,41 @@
+# 环境与密钥
+.env
+.env.*
+!.env.example
+config.env
+*.local.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.venv-build/
+venv/
+ENV/
+build/
+dist/
+*.spec
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 运行数据与下载内容
+data/
+*.log
+@AutomationLog.txt
+
+# 答案库个人文件（示例文件仍会提交）
+answer_banks/*.local.json
+answer_banks/my_*.json
+
+# IDE / 操作系统
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# 发布临时文件
+release/
