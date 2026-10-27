@@ -237,7 +237,11 @@ def choose_solver(
 ) -> Solver:
     solvers: list[Solver] = []
     if bank:
-        solvers.append(AnswerBankSolver(bank))
+        bank_path = Path(bank)
+        if bank_path.is_file():
+            solvers.append(AnswerBankSolver(bank_path))
+        else:
+            print(f"[提示] 答案库不存在，已跳过: {bank_path}")
     if use_llm:
         solvers.append(LLMSolver(model=llm_model))
     if allow_guess:
